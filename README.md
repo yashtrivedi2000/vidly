@@ -1,5 +1,23 @@
-# Getting Started with Create React App
+# Vidly
 
-A simple react app which basically has 9 movie list as a json array. It will show those movies via Movie component.  
-The movie can be deleted via DELETE button.  
-Once all the movies get deleted, the table will disappear.
+Vidly is a React web-app for showing movies from JSON array.
+
+## Installation
+
+Use the package manager [yarn](https://classic.yarnpkg.com/en/docs/install/) to install vidly.
+
+```bash
+yarn install
+```
+
+## Usage
+
+```bash
+yarn start // To start the web app
+```
+
+The movie array can be connected to your database, connect it in
+
+```bash
+src/Starter Code/services/fakeMovieService.js
+```
