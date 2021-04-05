@@ -10,6 +10,13 @@ class Movie extends Component {
     console.log(movies);
     this.setState({ movies });
   };
+  handleUpdateMovie = (mov) => {
+    const elementsIndex = this.state.movies.findIndex(
+      (element) => element._id == mov._id
+    );
+    this.state.movies[elementsIndex].title = prompt("Enter new Title");
+    this.setState({ movies: this.state.movies });
+  };
   render() {
     if (this.state.movies.length === 0)
       return <p>There is no movies in the database at this time!</p>;
@@ -41,6 +48,14 @@ class Movie extends Component {
                     Delete
                   </button>
                 </td>
+                <td>
+                  <button
+                    onClick={() => this.handleUpdateMovie(movie)}
+                    className="btn btn-danger"
+                  >
+                    Update
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -48,8 +63,6 @@ class Movie extends Component {
       </div>
     );
   }
-
-  //Methods
 }
 
 export default Movie;
