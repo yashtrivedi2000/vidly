@@ -9,7 +9,6 @@ import "font-awesome/css/font-awesome.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
     <Movie />
   </React.StrictMode>,
   document.getElementById("root")

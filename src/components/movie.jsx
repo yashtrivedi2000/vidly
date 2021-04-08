@@ -5,12 +5,12 @@ import Pagination from "./common/pagination";
 class Movie extends Component {
   state = {
     movies: getMovies(),
-    pageSize: 4,
+    pageSize: 3,
+    currentPage: 1,
   };
 
   handleDeleteMovie = (mov) => {
     const movies = this.state.movies.filter((movie) => movie._id !== mov._id);
-    console.log(movies);
     this.setState({ movies });
   };
   handleUpdateMovie = (mov) => {
@@ -26,6 +26,9 @@ class Movie extends Component {
     const index = movies.indexOf(movie);
     movies[index].isLiked = movie.isLiked ? false : true;
     this.setState({ movies });
+  };
+  handlePagination = (page) => {
+    this.setState({ currentPage: page });
   };
   render() {
     if (this.state.movies.length === 0)
@@ -44,39 +47,50 @@ class Movie extends Component {
             </tr>
           </thead>
           <tbody>
-            {console.log(this.state.movies)}
-            {this.state.movies.map((movie) => (
-              <tr key={movie._id}>
-                <td>{movie.title}</td>
-                <td>{movie.genre.name}</td>
-                <td>{movie.numberInStock}</td>
-                <td>{movie.dailyRentalRate}</td>
-                <td>
-                  <Like movie={movie} onClick={() => this.handleClick(movie)} />
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.handleDeleteMovie(movie)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.handleUpdateMovie(movie)}
-                    className="btn btn-danger"
-                  >
-                    Update
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {this.state.movies
+              .slice(
+                (this.state.currentPage - 1) * this.state.pageSize,
+                (this.state.currentPage - 1) * this.state.pageSize +
+                  this.state.pageSize
+              )
+              .map((movie) => (
+                <tr key={movie._id}>
+                  <td>{movie.title}</td>
+                  <td>{movie.genre.name}</td>
+                  <td>{movie.numberInStock}</td>
+                  <td>{movie.dailyRentalRate}</td>
+                  <td>
+                    <Like
+                      movie={movie}
+                      onClick={() => this.handleClick(movie)}
+                    />
+                  </td>
+                  <td>
+                    <button
+                      key={movie._id}
+                      onClick={() => this.handleDeleteMovie(movie)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => this.handleUpdateMovie(movie)}
+                      className="btn btn-danger"
+                    >
+                      Update
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <Pagination
+          currentPage={this.state.currentPage}
           count={this.state.movies.length}
           pageSize={this.state.pageSize}
+          onClick={this.handlePagination}
         />
       </div>
     );

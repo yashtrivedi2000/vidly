@@ -7,17 +7,27 @@ class Pagination extends Component {
   };
   state = {
     pages: this.getPages(this.props.count, this.props.pageSize),
+    currentPage: this.props.currentPage,
   };
   render() {
-    {
-      console.log(this.state.pages);
-    }
+    if (this.state.pages.length == 1) return null;
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
           {this.state.pages.map((page) => (
-            <li className="page-item">
-              <a className="page-link" href="#">
+            <li
+              key={page}
+              className={
+                page === this.props.currentPage
+                  ? "page-item active"
+                  : "page-item"
+              }
+            >
+              <a
+                className="page-link"
+                href="#"
+                onClick={() => this.props.onClick(page)}
+              >
                 {page}
               </a>
             </li>
