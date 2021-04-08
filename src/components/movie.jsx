@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { getMovies } from "../Starter Code/services/fakeMovieService";
-import Like from "./like";
+import Like from "./common/like";
+import Pagination from "./common/pagination";
 class Movie extends Component {
   state = {
     movies: getMovies(),
+    pageSize: 4,
   };
 
   handleDeleteMovie = (mov) => {
@@ -18,6 +20,7 @@ class Movie extends Component {
     this.state.movies[elementsIndex].title = prompt("Enter new Title");
     this.setState({ movies: this.state.movies });
   };
+
   handleClick = (movie) => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
@@ -28,7 +31,7 @@ class Movie extends Component {
     if (this.state.movies.length === 0)
       return <p>There is no movies in the database at this time!</p>;
     return (
-      <div>
+      <div className="container">
         <p>There are {this.state.movies.length} movies on the list</p>
 
         <table className="table">
@@ -41,6 +44,7 @@ class Movie extends Component {
             </tr>
           </thead>
           <tbody>
+            {console.log(this.state.movies)}
             {this.state.movies.map((movie) => (
               <tr key={movie._id}>
                 <td>{movie.title}</td>
@@ -70,6 +74,10 @@ class Movie extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          count={this.state.movies.length}
+          pageSize={this.state.pageSize}
+        />
       </div>
     );
   }
