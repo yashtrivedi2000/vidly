@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { getMovies } from "../Starter Code/services/fakeMovieService";
+import { paginate } from "../utils/paginate";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 class Movie extends Component {
   state = {
     movies: getMovies(),
-    pageSize: 3,
+    pageSize: 4,
     currentPage: 1,
   };
 
@@ -15,7 +16,7 @@ class Movie extends Component {
   };
   handleUpdateMovie = (mov) => {
     const elementsIndex = this.state.movies.findIndex(
-      (element) => element._id == mov._id
+      (element) => element._id === mov._id
     );
     this.state.movies[elementsIndex].title = prompt("Enter new Title");
     this.setState({ movies: this.state.movies });
@@ -33,9 +34,14 @@ class Movie extends Component {
   render() {
     if (this.state.movies.length === 0)
       return <p>There is no movies in the database at this time!</p>;
+    const movies = paginate(
+      this.state.movies,
+      this.state.currentPage,
+      this.state.pageSize
+    );
     return (
       <div className="container">
-        <p>There are {this.state.movies.length} movies on the list</p>
+        <p>There are {movies.length} movies on the list</p>
 
         <table className="table">
           <thead>
@@ -47,43 +53,34 @@ class Movie extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies
-              .slice(
-                (this.state.currentPage - 1) * this.state.pageSize,
-                (this.state.currentPage - 1) * this.state.pageSize +
-                  this.state.pageSize
-              )
-              .map((movie) => (
-                <tr key={movie._id}>
-                  <td>{movie.title}</td>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <Like
-                      movie={movie}
-                      onClick={() => this.handleClick(movie)}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      key={movie._id}
-                      onClick={() => this.handleDeleteMovie(movie)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => this.handleUpdateMovie(movie)}
-                      className="btn btn-danger"
-                    >
-                      Update
-                    </button>
-                  </td>
-                </tr>
-              ))}
+            {movies.map((movie) => (
+              <tr key={movie._id}>
+                <td>{movie.title}</td>
+                <td>{movie.genre.name}</td>
+                <td>{movie.numberInStock}</td>
+                <td>{movie.dailyRentalRate}</td>
+                <td>
+                  <Like movie={movie} onClick={() => this.handleClick(movie)} />
+                </td>
+                <td>
+                  <button
+                    key={movie._id}
+                    onClick={() => this.handleDeleteMovie(movie)}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => this.handleUpdateMovie(movie)}
+                    className="btn btn-danger"
+                  >
+                    Update
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <Pagination

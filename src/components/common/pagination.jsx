@@ -10,7 +10,7 @@ class Pagination extends Component {
     currentPage: this.props.currentPage,
   };
   render() {
-    if (this.state.pages.length == 1) return null;
+    if (this.state.pages.length === 1) return null;
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
