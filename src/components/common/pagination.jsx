@@ -5,29 +5,23 @@ class Pagination extends Component {
     const arr = Array.from({ length: numberOfPages }, (_, index) => index + 1);
     return arr;
   };
-  state = {
-    pages: this.getPages(this.props.count, this.props.pageSize),
-    currentPage: this.props.currentPage,
-  };
+
   render() {
-    if (this.state.pages.length === 1) return null;
+    const { currentPage, count, onClick, pageSize } = this.props;
+    const pages = this.getPages(count, pageSize);
+
+    if (pages.length === 1) return null;
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination">
-          {this.state.pages.map((page) => (
+          {pages.map((page) => (
             <li
               key={page}
               className={
-                page === this.props.currentPage
-                  ? "page-item active"
-                  : "page-item"
+                page === currentPage ? "page-item active" : "page-item"
               }
             >
-              <a
-                className="page-link"
-                href="#"
-                onClick={() => this.props.onClick(page)}
-              >
+              <a className="page-link" href="#" onClick={() => onClick(page)}>
                 {page}
               </a>
             </li>
