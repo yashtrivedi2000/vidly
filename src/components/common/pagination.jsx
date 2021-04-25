@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 class Pagination extends Component {
   getPages = (count, pageSize) => {
@@ -31,5 +32,10 @@ class Pagination extends Component {
     );
   }
 }
-
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
+  pageSize: PropTypes.number.isRequired,
+};
 export default Pagination;

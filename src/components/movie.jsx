@@ -1,13 +1,17 @@
 import React, { Component } from "react";
+import { getGenres } from "../Starter Code/services/fakeGenreService";
 import { getMovies } from "../Starter Code/services/fakeMovieService";
 import { paginate } from "../utils/paginate";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
+import Genre from "./genre";
 class Movie extends Component {
   state = {
     movies: getMovies(),
     pageSize: 4,
     currentPage: 1,
+    genres: getGenres(),
+    currentGenre: "All Genres",
   };
 
   handleDeleteMovie = (mov) => {
@@ -15,11 +19,12 @@ class Movie extends Component {
     this.setState({ movies });
   };
   handleUpdateMovie = (mov) => {
+    const movies = [...this.state.movies];
     const elementsIndex = this.state.movies.findIndex(
       (element) => element._id === mov._id
     );
-    this.state.movies[elementsIndex].title = prompt("Enter new Title");
-    this.setState({ movies: this.state.movies });
+    movies[elementsIndex].title = prompt("Enter new Title");
+    this.setState({ movies });
   };
 
   handleClick = (movie) => {
@@ -31,16 +36,26 @@ class Movie extends Component {
   handlePagination = (page) => {
     this.setState({ currentPage: page });
   };
+  handleClickGenre = (genre) => {
+    console.log("Genre:", genre.name);
+    this.setState({ currentGenre: genre.name });
+  };
   render() {
     if (this.state.movies.length === 0)
       return <p>There is no movies in the database at this time!</p>;
     const movies = paginate(
       this.state.movies,
       this.state.currentPage,
-      this.state.pageSize
+      this.state.pageSize,
+      this.state.currentGenre
     );
     return (
       <div className="container">
+        <Genre
+          onClickGenre={this.handleClickGenre}
+          genres={this.state.genres}
+          currentGenre={this.state.currentGenre}
+        />
         <p>There are {movies.length} movies on the list</p>
 
         <table className="table">
