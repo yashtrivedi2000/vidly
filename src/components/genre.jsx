@@ -4,6 +4,7 @@ class Genre extends Component {
     let genres = this.props.genres;
 
     let currentGenre = this.props.currentGenre;
+    console.log(currentGenre);
     return (
       <ul className="list-group">
         <li
@@ -12,6 +13,9 @@ class Genre extends Component {
               ? "list-group-item active"
               : "list-group-item"
           }
+          onClick={() =>
+            this.props.onClickGenre({ _id: 1, name: "All Genres" })
+          }
         >
           All Genres
         </li>
@@ -19,7 +23,7 @@ class Genre extends Component {
           <li
             key={genre._id}
             className={
-              genre.name === this.currentGenre
+              genre.name === currentGenre
                 ? "list-group-item active"
                 : "list-group-item"
             }
