@@ -51,56 +51,65 @@ class Movie extends Component {
     );
     return (
       <div className="container">
-        <Genre
-          onClickGenre={this.handleClickGenre}
-          genres={this.state.genres}
-          currentGenre={this.state.currentGenre}
-        />
         <p>There are {movies.length} movies on the list</p>
+        <div className="row">
+          <div className="col-3">
+            <Genre
+              onClickGenre={this.handleClickGenre}
+              genres={this.state.genres}
+              currentGenre={this.state.currentGenre}
+            />
+          </div>
+          <div className="col">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Genre</th>
+                  <th scope="col">Stock</th>
+                  <th scope="col">Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {movies.map((movie) => (
+                  <tr key={movie._id}>
+                    <td>{movie.title}</td>
+                    <td>{movie.genre.name}</td>
+                    <td>{movie.numberInStock}</td>
+                    <td>{movie.dailyRentalRate}</td>
+                    <td>
+                      <Like
+                        movie={movie}
+                        onClick={() => this.handleClick(movie)}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        key={movie._id}
+                        onClick={() => this.handleDeleteMovie(movie)}
+                        className="btn btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => this.handleUpdateMovie(movie)}
+                        className="btn btn-danger"
+                      >
+                        Update
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Genre</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {movies.map((movie) => (
-              <tr key={movie._id}>
-                <td>{movie.title}</td>
-                <td>{movie.genre.name}</td>
-                <td>{movie.numberInStock}</td>
-                <td>{movie.dailyRentalRate}</td>
-                <td>
-                  <Like movie={movie} onClick={() => this.handleClick(movie)} />
-                </td>
-                <td>
-                  <button
-                    key={movie._id}
-                    onClick={() => this.handleDeleteMovie(movie)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.handleUpdateMovie(movie)}
-                    className="btn btn-danger"
-                  >
-                    Update
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
         <Pagination
           currentPage={this.state.currentPage}
-          count={this.state.movies.length}
+          count={movies.length}
           pageSize={this.state.pageSize}
           onClick={this.handlePagination}
         />
